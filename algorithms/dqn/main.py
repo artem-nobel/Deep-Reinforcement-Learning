@@ -1,6 +1,6 @@
 from config import Config
 from agent import Agent
-from loger import *
+from logger import *
 from trainer import *
 import random
 import gymnasium as gym
