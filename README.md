@@ -12,7 +12,7 @@ Implementations of deep reinforcement learning algorithms in PyTorch.
 
 ## Features
 
-- Custom environments
+- Gymnasium
 - Replay Buffer
 - Double DQN
 - Dueling DQN
