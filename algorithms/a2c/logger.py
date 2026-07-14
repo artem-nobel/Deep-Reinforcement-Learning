@@ -15,8 +15,8 @@ def log_params(config):
 
 
 def log_metrics(agent, episode, reward, reward_history, loss_info=None):
-    if not mlflow.active_run():
-        mlflow.start_run()
+    # if not mlflow.active_run():
+    #     mlflow.start_run()
 
     metrics = {
         "episode_reward": reward,

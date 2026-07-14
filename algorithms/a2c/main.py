@@ -4,8 +4,7 @@ from matplotlib import pyplot as plt
 from agent import Agent
 from config import Config
 from trainer import Trainer
-from utils import get_env_info
-from utils import set_seed
+from utils import get_env_info, set_seed
 
 
 mlflow.set_tracking_uri("http://127.0.0.1:8080")
@@ -45,8 +44,9 @@ def main():
         config=config,
     )
 
-
-    reward_history, mean_reward_history = trainer.train()
+    with mlflow.start_run():
+        reward_history, mean_reward_history = trainer.train()
+    # reward_history, mean_reward_history = trainer.train()
 
     env.close()
 
