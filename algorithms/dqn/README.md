@@ -38,7 +38,7 @@ target = reward
 ### Loss
 
 ```text
-L = SmoothL1(Q(s,a), target)
+L = MSELoss(Q(s,a), target)
 ```
 
 The target network is updated periodically to stabilize training.
