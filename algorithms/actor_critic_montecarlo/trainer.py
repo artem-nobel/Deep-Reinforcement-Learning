@@ -1,6 +1,6 @@
 import numpy as np
 
-from algorithms.actor_critic.logger import log_params, log_metrics
+from algorithms.actor_critic_montecarlo.logger import log_params, log_metrics
 
 class Trainer:
 

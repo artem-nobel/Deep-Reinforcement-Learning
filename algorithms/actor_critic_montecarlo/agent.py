@@ -31,19 +31,23 @@ class Agent:
 
     def save(
             self,
-            path="actor_critic.pth"
+            path="actor_critic_montecarlo.pth"
     ):
 
-        torch.save(
-            self.model.state_dict(),
-            path
-        )
+        # torch.save(
+        #     self.model.state_dict(),
+        #     path
+        # )
+        torch.save({
+            "model": self.model.state_dict(),
+            "optimizer": self.optimizer.state_dict(),
+        })
 
         print(f"Saved to {path}")
 
     def load(
             self,
-            path="actor_critic.pth"
+            path="actor_critic_montecarlo.pth"
     ):
 
         self.model.load_state_dict(
@@ -109,6 +113,7 @@ class Agent:
             device=self.device
         )
 
+        # normalize returns for more stable training
         returns = (
                 returns
                 - returns.mean()
