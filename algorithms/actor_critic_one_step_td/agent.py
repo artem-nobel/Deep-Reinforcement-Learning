@@ -1,8 +1,9 @@
 import torch
 import torch.optim as optim
-from torch.distributions import Categorical
+from torch import nn
+from torch.distributions import Categorical, distribution
 
-from model import ActorCriticNetwork
+from algorithms.actor_critic_one_step_td.model import ActorCriticNetwork
 
 
 class Agent:
@@ -22,16 +23,22 @@ class Agent:
             lr=config.learning_rate
         )
 
-        self.loss_fn = torch.nn.SmoothL1Loss()
+        # self.loss_fn = torch.nn.SmoothL1Loss()
+        self.loss_fn = nn.MSELoss()
 
         self.last_loss = 0
         self.last_actor_loss = 0
         self.last_critic_loss = 0
         self.last_grad_norm = 0
 
+        self.last_value = 0
+        self.last_target = 0
+        self.last_advantage = 0
+        self.last_value_error = 0
+
     def save(
             self,
-            path="actor_critic_montecarlo.pth"
+            path="a2c_one_step.pth"
     ):
 
         # torch.save(
@@ -47,7 +54,7 @@ class Agent:
 
     def load(
             self,
-            path="actor_critic_montecarlo.pth"
+            path="a2c_one_step.pth"
     ):
 
         self.model.load_state_dict(
@@ -115,15 +122,32 @@ class Agent:
                 target = reward + self.gamma * next_value.squeeze()
 
         advantage = target - value
+        advantage = torch.clamp(
+            advantage,
+            -10,
+            10
+        )
+        # advantage = (advantage - advantage.mean()) / (advantage.std() + 1e-8)
+        self.last_value = value.item()
+        self.last_target = target.item()
+        self.last_advantage = advantage.item()
 
-        actor_loss = -log_prob * advantage.detach()
+        self.last_value_error = abs(target - value).item()
+        # entropy = distribution.entropy()
+        #
+        # actor_loss = (
+        #         -log_prob * advantage.detach()
+        #         - 0.01 * entropy
+        # )
+        actor_loss = (-log_prob * advantage.detach()).mean()
+        # actor_loss = -log_prob * advantage.detach()
 
         critic_loss = self.loss_fn(
             value,
             target.detach()
         )
 
-        loss = actor_loss + critic_loss
+        loss = actor_loss + 0.5 * critic_loss
 
         self.optimizer.zero_grad()
 

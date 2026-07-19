@@ -1,14 +1,14 @@
 import gymnasium as gym
 import mlflow
 from matplotlib import pyplot as plt
-from agent import Agent
-from config import Config
-from trainer import Trainer
-from utils import get_env_info, set_seed
+from algorithms.actor_critic_one_step_td.agent import Agent
+from algorithms.actor_critic_one_step_td.config import Config
+from algorithms.actor_critic_one_step_td.trainer import Trainer
+from algorithms.actor_critic_one_step_td.utils import get_env_info, set_seed
 
 
 mlflow.set_tracking_uri("http://127.0.0.1:8080")
-mlflow.set_experiment("lunar_lander_actor_critic")
+mlflow.set_experiment("lunar_lander_a2c_one_step")
 
 
 def main():
@@ -46,7 +46,6 @@ def main():
 
     with mlflow.start_run():
         reward_history, mean_reward_history = trainer.train()
-    # reward_history, mean_reward_history = trainer.train()
 
     env.close()
 
@@ -59,7 +58,7 @@ def main():
     )
 
     plt.title(
-        "Actor-Critic training"
+        "a2c_one_step"
     )
 
     plt.xlabel(

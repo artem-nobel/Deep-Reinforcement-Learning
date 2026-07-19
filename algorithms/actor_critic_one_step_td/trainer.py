@@ -1,6 +1,6 @@
 import numpy as np
 
-from algorithms.actor_critic_montecarlo.logger import log_params, log_metrics
+from algorithms.actor_critic_one_step_td.logger import log_params, log_metrics
 
 
 class Trainer:
@@ -88,7 +88,8 @@ class Trainer:
                 print(
                     f"Episode {episode:5d} | "
                     f"Reward {reward:8.2f} | "
-                    f"Running {running_reward:8.2f}"
+                    f"Running {running_reward:8.2f} | "
+                    f"mean reward {np.mean(reward_history[-100:]):8.2f}"
                 )
 
             if (
