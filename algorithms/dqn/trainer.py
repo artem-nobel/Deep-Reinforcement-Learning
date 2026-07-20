@@ -17,10 +17,6 @@ def make_env(env_name, seed):
 
 
 def create_vector_env(env_name, n_envs, seed):
-    """
-    Создает AsyncVectorEnv один раз.
-    """
-
     return AsyncVectorEnv(
         [
             make_env(env_name, seed + i)
@@ -67,11 +63,6 @@ def train_episode_vectorized(
     config,
     seed,
 ):
-    """
-    Один логический эпизод обучения.
-
-    Все среды работают одновременно.
-    """
 
     states, _ = envs.reset(seed=seed)
 
