@@ -1,12 +1,12 @@
-from replay_buffer import PrioritizedReplayBuffer
-from config import Config
-from model import DuelingDQN
+from algorithms.dqn.replay_buffer import PrioritizedReplayBuffer
+from algorithms.dqn.config import Config
+from algorithms.dqn.model import DuelingDQN
+from algorithms.dqn.utils import _to_tensor
 
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from utils import _to_tensor
 
 class Agent:
     def __init__(self, config: Config, n_states=16, n_actions=4):
