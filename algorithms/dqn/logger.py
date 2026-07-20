@@ -1,10 +1,8 @@
 import mlflow
-from matplotlib import pyplot as plt
 import numpy as np
 
 
 def log_params(config):
-    # with mlflow.start_run(run_name='dqn_duel_tree'):
         mlflow.log_params({
             "learning_rate": config.learning_rate,
             "gamma": config.gamma,
