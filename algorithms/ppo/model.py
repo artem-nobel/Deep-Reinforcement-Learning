@@ -6,17 +6,23 @@ class ActorCriticNetwork(nn.Module):
         super().__init__()
 
         self.shared = nn.Sequential(
-            nn.Linear(n_states, 128),
+            nn.Linear(n_states, 256),
             nn.Tanh(),
         )
 
-        self.actor = nn.Linear(128, n_actions)
+        self.actor = nn.Sequential(
+            nn.Linear(256, 64),
+            nn.Tanh(),
+            nn.Linear(64, n_actions)
+        )
 
-        self.critic = nn.Linear(128, 1)
-
+        self.critic = nn.Sequential(
+            nn.Linear(256, 64),
+            nn.Tanh(),
+            nn.Linear(64, 1),
+        )
     def forward(self, state):
         features = self.shared(state)
-
         logits = self.actor(features)
         value = self.critic(features)
         return logits, value
